@@ -40,3 +40,5 @@ class DoctorListView(generic.ListView):
             initial={"specialization": self.request.GET.get("specialization", "")}
         )
         return context
+
+
