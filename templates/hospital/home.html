@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Home | City Care Clinic{% endblock %}
+{% block content %}
+<div class="p-5 mb-4 bg-primary text-white rounded-3">
+    <h1 class="display-5 fw-bold">Welcome to City Care Clinic</h1>
+    <p class="col-md-8 fs-5">Book appointments with the best specialists, track your medical history, and manage your health — all in one place.</p>
+    <a class="btn btn-light btn-lg" href="{% url 'hospital:doctor-list' %}">Find a Doctor</a>
+</div>
+
+<div class="row g-4">
+    <div class="col-md-4">
+        <div class="card p-3 text-center h-100">
+            <i class="fa-solid fa-user-doctor fa-2x text-primary mb-3"></i>
+            <h5>{{ doctors_count }} Doctors</h5>
+            <p class="text-muted">Across {{ departments_count }} departments</p>
+            <p class="text-muted"></p>
+        </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card p-3 text-center h-100">
+        <i class="fa-solid fa-users fa-2x text-success mb-3"></i>
+        <h5>{{ patients_count }} Patients</h5>
+        <p class="text-muted">
+            Registered in our clinic
+        </p>
+      </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 text-center h-100">
+            <i class="fa-solid fa-calendar-check fa-2x text-primary mb-3"></i>
+            <h5>Easy Booking</h5>
+            <p class="text-muted">Book an appointment in a few clicks</p>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card p-3 text-center h-100">
+            <i class="fa-solid fa-file-medical fa-2x text-primary mb-3"></i>
+            <h5>Medical Records</h5>
+            <p class="text-muted">Track your diagnosis and prescriptions</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

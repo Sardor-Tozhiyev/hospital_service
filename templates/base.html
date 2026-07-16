@@ -10,7 +10,7 @@
   <style>
     body {background-color: #f5f7fa; }
     .navbar-brand i {margin-right: 8px; }
-    .card {border: none; box-shadow: 0 1px 4 px rgba(0,0,0,0.08); }
+    .card {border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
     .footer {padding: 20px 0; color: #6c757d; text-align: center; }
   </style>
 </head>
@@ -26,7 +26,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav me-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'hospital:doctors-list' %}">Doctors</a>
+          <a class="nav-link" href="{% url 'hospital:doctor-list' %}">Doctors</a>
         </li>
         {% if user.is_authenticated %}
           {% if user.role == "patient" %}
