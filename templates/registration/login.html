@@ -1,24 +1,45 @@
 {% extends "base.html" %}
 {% load crispy_forms_filters %}
 
+{% block title %}Login{% endblock %}
+
 {% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-5">
+    <div class="card p-4">
+      <h3 class="mb-4 text-center">Login</h3>
 
-{% if form.errors %}
-  <p>Your username and password didn't match. Please try again.</p>
-{% endif %}
+      {% if form.errors %}
+        <div class="alert alert-danger">
+          Invalid username or password.
+        </div>
+      {% endif %}
 
-<h1>Login</h1>
+      {% if next %}
+        <div class="alert alert-info">
+          Please log in to continue.
+        </div>
+      {% endif %}
 
-{% if next %}
-  <p>Please login to see this page.</p>
-{% endif %}
+      <form method="post" action="{% url 'login' %}">
+        {% csrf_token %}
 
-<form method="post" action="{% url 'login' %}">
-  {% csrf_token %}
-  {{ form|crispy }}
+        {{ form|crispy }}
 
-  <input type="submit" value="Login" class="btn btn-primary" />
-  <input type="hidden" name="next" value="{{ next }}" />
-</form>
+        <button type="submit" class="btn btn-primary w-100 mt-3">
+          Login
+        </button>
 
+        <input type="hidden" name="next" value="{{ next }}">
+      </form>
+
+      <hr>
+
+      <p class="text-center mb-0">
+        Don't have an account?
+        <a href="{% url 'hospital:register' %}">Sign Up</a>
+      </p>
+    </div>
+  </div>
+</div>
 {% endblock %}

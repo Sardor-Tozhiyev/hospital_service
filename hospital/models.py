@@ -29,6 +29,9 @@ class Department(models.Model):
     name = models.CharField(max_length=100)
     floor = models.IntegerField()
 
+    class Meta:
+        ordering = ["name"]
+
     def __str__(self):
         return f"{self.name} (Floor: {self.floor})"
 
@@ -80,6 +83,9 @@ class PatientProfile(models.Model):
     date_of_birth = models.DateField(null=True, blank=True)
     phone_number = models.CharField(max_length=20, null=True, blank=True)
     address = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        ordering = ["user__last_name"]
 
     def __str__(self):
         return self.user.get_full_name() or self.user.username

@@ -1,7 +1,4 @@
-from idlelib import query
-from multiprocessing import context
 from typing import cast
-from urllib import response
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -9,34 +6,50 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from hospital.forms import DoctorSearchForm, PatientRegistrationForm, AppointmentForm, AppointmentSearchForm, \
-    MedicalRecordSearchForm, MedicalRecordForm
-from hospital.mixins import PatientRequiredMixin, DoctorRequiredMixin
-from hospital.models import DoctorProfile, PatientProfile, Appointment, CustomUser, MedicalRecord
+from hospital.forms import (
+    DoctorSearchForm,
+    PatientRegistrationForm,
+    AppointmentForm,
+    AppointmentSearchForm,
+    MedicalRecordSearchForm,
+    MedicalRecordForm
+)
+from hospital.mixins import (PatientRequiredMixin,
+                             DoctorRequiredMixin)
+from hospital.models import (
+    DoctorProfile,
+    PatientProfile,
+    Appointment,
+    CustomUser,
+    MedicalRecord, Department
+)
 
 
 class HomeView(generic.TemplateView):
+    template_name = "hospital/home.html"
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["doctors_count"] = DoctorProfile.objects.count()
-        context["departments_count"] = DoctorProfile.objects.count()
+        context["departments_count"] = Department.objects.count()
         context["patients_count"] = PatientProfile.objects.count()
         return context
 
 
 class DoctorListView(generic.ListView):
     model = DoctorProfile
+    template_name = "hospital/doctor_list.html"
     context_object_name = "doctor_list"
     paginate_by = 5
 
     def get_queryset(self):
         queryset = DoctorProfile.objects.select_related(
             "user", "department"
-        ).prefetch_related("specializations")
+        ).prefetch_related("specialization")
         specialization = self.request.GET.get("specialization")
         if specialization:
             queryset = queryset.filter(
-                specialization__name__icontains=specialization
+                specializations__name__icontains=specialization
             ).distinct()
         return queryset
 
@@ -50,6 +63,7 @@ class DoctorListView(generic.ListView):
 
 class DoctorDetailView(generic.DetailView):
     model = DoctorProfile
+    template_name = "hospital/doctor_detail.html"
     context_object_name = "doctor"
 
 
@@ -123,7 +137,7 @@ class AppointmentCancelView(LoginRequiredMixin, PatientRequiredMixin, generic.Vi
         return redirect("hospital:my-appointments")
 
 
-class AppointmentConfirmView(LoginRequiredMixin, PatientRequiredMixin, generic.View):
+class AppointmentConfirmView(LoginRequiredMixin, DoctorRequiredMixin, generic.View):
     def get(self, request, pk):
         appointment = get_object_or_404(
             Appointment,
