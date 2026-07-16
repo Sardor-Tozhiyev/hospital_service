@@ -3,7 +3,16 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset
 from django.contrib.auth.forms import UserCreationForm
 
-from hospital.models import Specialization, Department, CustomUser, DoctorProfile, PatientProfile, Symptom, Appointment
+from hospital.models import (
+    Specialization,
+    Department,
+    CustomUser,
+    DoctorProfile,
+    PatientProfile,
+    Symptom,
+    Appointment,
+    MedicalRecord
+)
 
 
 class DoctorCreationForm(UserCreationForm):
@@ -114,3 +123,55 @@ class AppointmentForm(forms.ModelForm):
             )
         )
 
+
+class MedicalRecordForm(forms.ModelForm):
+    class Meta:
+        model = MedicalRecord
+        fields = ["diagnosis", "prescription"]
+        widgets = {
+            "diagnosis": forms.Textarea(attrs={"rows": 4}),
+            "prescription": forms.Textarea(attrs={"rows": 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.add_input(
+            Submit("submit", "Save Record", css_class="btn-primary w-100")
+        )
+
+
+class DoctorSearchForm(forms.Form):
+    specialization = forms.CharField(
+        max_length=100,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by specialization"}),
+    )
+
+
+class AppointmentSearchForm(forms.Form):
+    doctor_name = forms.CharField(
+        max_length=100,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by doctor name"}),
+    )
+
+
+class MedicalRecordSearchForm(forms.Form):
+    query = forms.CharField(
+        max_length=100,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by diagnosis"}),
+    )
+
+
+class ScheduleSearchForm(forms.Form):
+    patient_name = forms.CharField(
+        max_length=100,
+        required=False,
+        label="",
+        widget=forms.TextInput(attrs={"placeholder": "Search by patient name"}),
+    )
