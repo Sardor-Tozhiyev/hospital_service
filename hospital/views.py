@@ -6,7 +6,7 @@ from django.shortcuts import get_object_or_404
 from django.urls import reverse_lazy
 from django.views import generic
 
-from hospital.forms import DoctorSearchForm, PatientRegistrationForm, AppointmentForm
+from hospital.forms import DoctorSearchForm, PatientRegistrationForm, AppointmentForm, AppointmentSearchForm
 from hospital.mixins import PatientRequiredMixin
 from hospital.models import DoctorProfile, PatientProfile, Appointment, CustomUser
 
@@ -82,6 +82,28 @@ class AppointmentCreateView(LoginRequiredMixin, PatientRequiredMixin, generic.Cr
         response = super().form_valid(form)
         messages.success(self.request, "Appointment booked successfully.")
         return response
+
+
+class MyAppointmentsListView(LoginRequiredMixin, PatientRequiredMixin, generic.ListView):
+    model = Appointment
+    context_object_name = "appointments_list"
+    paginate_by = 5
+
+    def get_queryset(self):
+        queryset = Appointment.objects.filter(
+            patient=self.request.user.patient_profile
+        ).select_related("doctor__user").prefetch_related("symptoms")
+        doctor_name = self.request.GET.get("doctor_name")
+        if doctor_name:
+            queryset = queryset.filter(doctor__user__last_name__icontains=doctor_name)
+        return queryset
+
+    def get_context_data(self,**kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = AppointmentSearchForm(
+            initial={"doctor_name": self.request.GET.get("doctor_name", "")}
+        )
+        return context
 
 
 
