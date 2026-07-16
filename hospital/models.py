@@ -85,3 +85,33 @@ class PatientProfile(models.Model):
         return self.user.get_full_name() or self.user.username
 
 
+class Appointment(models.Model):
+    STATUS_CHOICES = [
+        ("pending", "Pending"),
+        ("confirmed", "Confirmed"),
+        ("completed", "Completed"),
+        ("cancelled", "Cancelled"),
+    ]
+    doctor = models.ForeignKey(
+        DoctorProfile,
+        on_delete=models.CASCADE,
+        related_name="appointments"
+    )
+    patient = models.ForeignKey(
+        PatientProfile,
+        on_delete=models.CASCADE,
+        related_name="appointments"
+    )
+    symptoms = models.ManyToManyField(
+        Symptom,
+        related_name="appointments",
+        blank=True,
+    )
+    date_time = models.DateTimeField()
+    status = models.CharField(
+        max_length=20,
+        choices=STATUS_CHOICES,
+        default="pending",
+    )
+
+
