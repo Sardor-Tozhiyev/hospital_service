@@ -1,4 +1,7 @@
+from idlelib import query
+from multiprocessing import context
 from typing import cast
+from urllib import response
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -6,9 +9,10 @@ from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
-from hospital.forms import DoctorSearchForm, PatientRegistrationForm, AppointmentForm, AppointmentSearchForm
+from hospital.forms import DoctorSearchForm, PatientRegistrationForm, AppointmentForm, AppointmentSearchForm, \
+    MedicalRecordSearchForm, MedicalRecordForm
 from hospital.mixins import PatientRequiredMixin, DoctorRequiredMixin
-from hospital.models import DoctorProfile, PatientProfile, Appointment, CustomUser
+from hospital.models import DoctorProfile, PatientProfile, Appointment, CustomUser, MedicalRecord
 
 
 class HomeView(generic.TemplateView):
@@ -153,4 +157,46 @@ class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListVi
         )
         return context
 
+
+class MedicalRecordCreateView(LoginRequiredMixin, DoctorRequiredMixin, generic.CreateView):
+    model = MedicalRecord
+    form_class = MedicalRecordForm
+    success_url = reverse_lazy("hospital:doctor-schedule")
+
+    def form_valid(self, form):
+        appointment = get_object_or_404(
+            Appointment,
+            pk=self.kwargs["pk"],
+            doctor=self.request.user.doctor_profile
+        )
+        form.instance.appointment = appointment
+        form.instance.doctor = appointment.doctor
+        form.instance.patient = appointment.patient
+        appointment.status = "completed"
+        appointment.save()
+        response = super().form_valid(form)
+        messages.success(self.request, "Medical record created successfully.")
+        return response
+
+
+class MedicalRecordListView(LoginRequiredMixin, PatientRequiredMixin, generic.ListView):
+    model = MedicalRecord
+    context_object_name = "record_list"
+    paginate_by = 5
+
+    def get_queryset(self):
+        queryset = MedicalRecord.objects.filter(
+            patient=self.request.user.patient_profile
+        ).select_related("doctor__user")
+        query =self.request.GET.get("query")
+        if query:
+            queryset = queryset.filter(diagnosis__icontains=query)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context ["search_form"] = MedicalRecordSearchForm(
+            initial={"query": self.request.GET.get("query", "")}
+        )
+        return context
 
