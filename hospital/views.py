@@ -7,7 +7,7 @@ from django.urls import reverse_lazy
 from django.views import generic
 
 from hospital.forms import DoctorSearchForm, PatientRegistrationForm, AppointmentForm, AppointmentSearchForm
-from hospital.mixins import PatientRequiredMixin
+from hospital.mixins import PatientRequiredMixin, DoctorRequiredMixin
 from hospital.models import DoctorProfile, PatientProfile, Appointment, CustomUser
 
 
@@ -131,5 +131,26 @@ class AppointmentConfirmView(LoginRequiredMixin, PatientRequiredMixin, generic.V
         messages.success(request, "Appointment confirmed.")
         return redirect("hospital:doctor-schedule")
 
+
+class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListView):
+    model = Appointment
+    context_object_name = "appointments_list"
+    paginate_by = 10
+
+    def get_queryset(self):
+        queryset = Appointment.objects.filter(
+            doctor=self.request.user.doctor_profile
+        ).select_related("patient__user")
+        patient_name = self.request.GET.get("patient_name")
+        if patient_name:
+            queryset = queryset.filter(patient__user__last_name__icontains=patient_name)
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["search_form"] = AppointmentSearchForm(
+            initial={"patient_name": self.request.GET.get("patient_name", "")}
+        )
+        return context
 
 
