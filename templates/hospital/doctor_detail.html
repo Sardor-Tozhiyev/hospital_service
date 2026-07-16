@@ -1,10 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% block title %}{{ doctor }}{% endblock %}
+{% block content %}
+<div class="card p-4">
+  <h2>{{ doctor }}</h2>
+  <p class="text-muted">
+    {% for spec in doctor.specializations.all %}
+        <span class="badge bg-info text-dark">{{ spec }}</span>
+    {% endfor %}
+  </p>
+  <p><i class="fa-solid fa-building"></i> Department: {{ doctor.department }}</p>
+  <p><i class="fa-solid fa-briefcase"></i> Experience: {{ doctor.experience_years }} years</p>
+  <p><i class="fa-solid fa-id-card"></i> License: {{ doctor.license_number }}</p>
+
+  {% if user.is_authenticated and user.role == "patient" %}
+  <a href="{% url 'hospital:appointment-create' doctor.pk %}" class="btn btn-primary mt-3">
+    <i class="fa-solid fa-calendar-plus"></i> Book Appointment
+  </a>
+  {% endif %}
+</div>
+{% endblock %}
