@@ -3,7 +3,7 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Fieldset
 from django.contrib.auth.forms import UserCreationForm
 
-from hospital.models import Specialization, Department, CustomUser, DoctorProfile, PatientProfile
+from hospital.models import Specialization, Department, CustomUser, DoctorProfile, PatientProfile, Symptom, Appointment
 
 
 class DoctorCreationForm(UserCreationForm):
@@ -86,3 +86,31 @@ class PatientRegistrationForm(UserCreationForm):
             user.save()
             PatientProfile.objects.create(user=user)
         return user
+
+
+class AppointmentForm(forms.ModelForm):
+    symptoms = forms.ModelMultipleChoiceField(
+        queryset=Symptom.objects.all(),
+        widget=forms.CheckboxSelectMultiple,
+        required=False,
+    )
+
+    class Meta:
+        model = Appointment
+        fields = ["doctor", "date_time", "symptoms", "reason"]
+        widgets = {
+            "date_time": forms.DateTimeInput(attrs={"type": "datetime-local"}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            Fieldset("", "doctor", "date_time", "symptoms", "reason"),
+        )
+        self.helper.add_input(
+            Submit(
+                "submit", "Confirm Booking", css_class="btn-primary w-100"
+            )
+        )
+
