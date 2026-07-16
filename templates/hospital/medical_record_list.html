@@ -1,10 +1,33 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}My Medical Records{% endblock %}
+{% block content %}
+<h2 class="mb-4">My Medical Records</h2>
+
+<form method="get" class="row g-2 mb-4 align-items-end">
+  <div class="col-md-8">
+    {{ search_form.query|as_crispy_field }}
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+</div>
+</form>
+
+<div class="row g-3">
+  {% for record in record_list %}
+  <div class="col-md-6">
+    <div class="card p-3">
+      <h6>{{ record.doctor }} — {{ record.created_at|date:"d.m.Y" }}</h6>
+      <p><strong>Diagnosis:</strong> {{ record.diagnosis }}</p>
+      {% if record.prescription %}
+      <p><strong>Prescription:</strong> {{ record.prescription }}</p>
+      {% endif %}
+    </div>
+  </div>
+  {% empty %}
+  <p class="text-muted">No medical records yet.</p>
+  {% endfor %}
+</div>
+
+{% include "includes/pagination.html" %}
+{% endblock %}
