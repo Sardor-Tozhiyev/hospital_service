@@ -2,7 +2,7 @@ from typing import cast
 
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.views import generic
 
@@ -104,6 +104,32 @@ class MyAppointmentsListView(LoginRequiredMixin, PatientRequiredMixin, generic.L
             initial={"doctor_name": self.request.GET.get("doctor_name", "")}
         )
         return context
+
+
+class AppointmentCancelView(LoginRequiredMixin, PatientRequiredMixin, generic.View):
+    def get(self, request, pk):
+        appointment = get_object_or_404(
+            Appointment,
+            pk=pk,
+            patient=request.user.patient_profile
+        )
+        appointment.status = "cancelled"
+        appointment.save()
+        messages.info(request, "Appointment canceled.")
+        return redirect("hospital:my-appointments")
+
+
+class AppointmentConfirmView(LoginRequiredMixin, PatientRequiredMixin, generic.View):
+    def get(self, request, pk):
+        appointment = get_object_or_404(
+            Appointment,
+            pk=pk,
+            doctor=request.user.doctor_profile
+        )
+        appointment.status = "confirmed"
+        appointment.save()
+        messages.success(request, "Appointment confirmed.")
+        return redirect("hospital:doctor-schedule")
 
 
 
