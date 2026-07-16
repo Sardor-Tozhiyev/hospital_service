@@ -1,10 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>$Title$</title>
-</head>
-<body>
-$END$
-</body>
-</html>
+{% extends "base.html" %}
+{% load crispy_forms_tags %}
+{% block title %}My Appointments{% endblock %}
+{% block content %}
+<h2 class="mb-4">My Appointments</h2>
+
+<form method="get" class="row g-2 mb-4 align-items-end">
+  <div class="col-md-8">
+    {{ search_form.doctor_name|as_crispy_field }}
+  </div>
+  <div class="col-md-2">
+    <button type="submit" class="btn btn-primary w-100">Search</button>
+  </div>
+</form>
+
+<table class="table table-hover bg-white">
+  <thead>
+    <tr>
+      <th>Doctor</th>
+      <th>Date & Time</th>
+      <th>Symptoms</th>
+      <th>Status</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for appointment in appointment_list %}
+    <tr>
+      <td>{{ appointment.doctor }}</td>
+      <td>{{ appointment.date_time }}</td>
+      <td>
+        {% for s in appointment.symptoms.all %}
+          <span class="badge bg-secondary">{{ s }}</span>
+        {% endfor %}
+      </td>
+      <td>
+        <span class="badge bg-{% if appointment.status == 'confirmed' %}success{% elif appointment.status == 'cancelled' %}danger{% elif appointment.status == 'completed' %}primary{% else %}warning{% endif %}">
+          {{ appointment.get_status_display }}
+        </span>
+      </td>
+      <td>
+        {% if appointment.status == "pending" %}
+        <a href="{% url 'hospital:appointment-cancel' appointment.pk %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+        {% endif %}
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5" class="text-center text-muted">No appointments yet.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+{% include "includes/pagination.html" %}
+{% endblock %}
