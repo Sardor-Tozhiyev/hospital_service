@@ -115,3 +115,30 @@ class Appointment(models.Model):
     )
 
 
+class MedicalRecord(models.Model):
+    patient = models.ForeignKey(
+        PatientProfile,
+        on_delete=models.CASCADE,
+        related_name="records"
+    )
+    doctor = models.ForeignKey(
+        DoctorProfile,
+        on_delete=models.CASCADE,
+        related_name="records"
+    )
+    appointment = models.OneToOneField(
+        Appointment,
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="record",
+    )
+    diagnosis = models.TextField()
+    prescription = models.TextField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return f"Record for {self.patient} by {self.doctor} ({self.created_at:%Y-%m-%d %H:%M})"
