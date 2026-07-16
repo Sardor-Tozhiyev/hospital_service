@@ -42,3 +42,8 @@ class DoctorListView(generic.ListView):
         return context
 
 
+class DoctorDetailView(generic.DetailView):
+    model = DoctorProfile
+    template_name = "hospital/doctor_detail.html"
+    context_object_name = "doctor"
+
