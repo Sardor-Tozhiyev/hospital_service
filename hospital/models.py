@@ -113,6 +113,7 @@ class Appointment(models.Model):
         choices=STATUS_CHOICES,
         default="pending",
     )
+    reason = models.CharField(max_length=100, null=True, blank=True)
 
 
 class MedicalRecord(models.Model):
