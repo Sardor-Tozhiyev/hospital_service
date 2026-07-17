@@ -41,7 +41,7 @@ class DoctorListView(generic.ListView):
     model = DoctorProfile
     template_name = "hospital/doctor_list.html"
     context_object_name = "doctor_list"
-    paginate_by = 5
+    paginate_by = 6
 
     def get_queryset(self):
         queryset = DoctorProfile.objects.select_related(
