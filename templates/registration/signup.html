@@ -1,23 +1,42 @@
 {% extends "base.html" %}
 {% load crispy_forms_tags %}
-
 {% block title %}Sign Up{% endblock %}
-
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-5">
-    <div class="card p-4">
-      <h3 class="mb-4 text-center">Create an Account</h3>
-
-      {% crispy form %}
-
-      <hr>
-
-      <p class="text-center mb-0">
-        Already have an account?
-        <a href="{% url 'login' %}">Login</a>
-      </p>
+<section class="py-4">
+  <div class="row justify-content-center align-items-center g-5">
+    <div class="col-lg-5">
+      <div class="text-center mb-4">
+        <div
+          class="rounded-circle bg-success-subtle d-inline-flex justify-content-center align-items-center mb-4"
+          style="width: 110px; height: 110px;"
+        >
+          <i class="fa-solid fa-user-plus fa-3x text-success"></i>
+        </div>
+        <h1 class="fw-bold">
+          Create Your Account
+        </h1>
+        <p class="text-muted">
+          Join City Care Clinic to book appointments, manage your medical records, and stay connected with your healthcare.
+        </p>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          {% crispy form %}
+          <hr class="my-4">
+          <p class="text-center mb-0">
+            Already have an account?
+            <a
+              href="{% url 'login' %}"
+              class="fw-semibold text-decoration-none"
+            >
+              Login
+            </a>
+          </p>
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}

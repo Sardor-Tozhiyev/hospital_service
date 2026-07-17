@@ -1,45 +1,68 @@
 {% extends "base.html" %}
 {% load crispy_forms_filters %}
-
 {% block title %}Login{% endblock %}
-
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-5">
-    <div class="card p-4">
-      <h3 class="mb-4 text-center">Login</h3>
-
-      {% if form.errors %}
-        <div class="alert alert-danger">
-          Invalid username or password.
+<section class="py-4">
+  <div class="row justify-content-center align-items-center g-5">
+    <div class="col-lg-5">
+      <div class="text-center mb-4">
+        <div
+          class="rounded-circle bg-primary-subtle d-inline-flex justify-content-center align-items-center mb-4"
+          style="width: 110px; height: 110px;"
+        >
+          <i class="fa-solid fa-user-lock fa-3x text-primary"></i>
         </div>
-      {% endif %}
-
-      {% if next %}
-        <div class="alert alert-info">
-          Please log in to continue.
+        <h1 class="fw-bold">
+          Welcome Back
+        </h1>
+        <p class="text-muted">
+          Sign in to manage your appointments and medical records.
+        </p>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          {% if form.errors %}
+            <div class="alert alert-danger">
+              <i class="fa-solid fa-circle-exclamation me-2"></i>
+              Invalid username or password.
+            </div>
+          {% endif %}
+          {% if next %}
+            <div class="alert alert-info">
+              Please log in to continue.
+            </div>
+          {% endif %}
+          <form method="post" action="{% url 'login' %}">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button
+              type="submit"
+              class="btn btn-primary w-100 btn-lg mt-3"
+            >
+              <i class="fa-solid fa-right-to-bracket me-2"></i>
+              Login
+            </button>
+            <input
+              type="hidden"
+              name="next"
+              value="{{ next }}"
+            >
+          </form>
+          <hr class="my-4">
+          <p class="text-center mb-0">
+            Don't have an account?
+            <a
+              href="{% url 'hospital:register' %}"
+              class="fw-semibold text-decoration-none"
+            >
+              Sign Up
+            </a>
+          </p>
         </div>
-      {% endif %}
-
-      <form method="post" action="{% url 'login' %}">
-        {% csrf_token %}
-
-        {{ form|crispy }}
-
-        <button type="submit" class="btn btn-primary w-100 mt-3">
-          Login
-        </button>
-
-        <input type="hidden" name="next" value="{{ next }}">
-      </form>
-
-      <hr>
-
-      <p class="text-center mb-0">
-        Don't have an account?
-        <a href="{% url 'hospital:register' %}">Sign Up</a>
-      </p>
+      </div>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}
