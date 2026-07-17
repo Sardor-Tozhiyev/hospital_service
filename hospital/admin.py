@@ -33,6 +33,7 @@ class DoctorProfileAdmin(admin.ModelAdmin):
         "license_number"
     )
 
+
 @admin.register(PatientProfile)
 class PatientProfileAdmin(admin.ModelAdmin):
     list_display = (

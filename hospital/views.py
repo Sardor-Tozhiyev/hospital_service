@@ -57,7 +57,9 @@ class DoctorListView(generic.ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["search_form"] = DoctorSearchForm(
-            initial={"specialization": self.request.GET.get("specialization", "")}
+            initial={"specialization": self.request.GET.get(
+                "specialization", ""
+            )}
         )
         return context
 
@@ -79,26 +81,40 @@ class PatientRegisterView(generic.CreateView):
         return response
 
 
-class AppointmentCreateView(LoginRequiredMixin, PatientRequiredMixin, generic.CreateView):
+class AppointmentCreateView(
+    LoginRequiredMixin,
+    PatientRequiredMixin,
+    generic.CreateView
+):
     model = Appointment
     form_class = AppointmentForm
     success_url = reverse_lazy("hospital:my-appointments")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["doctor"] = get_object_or_404(DoctorProfile, pk=self.kwargs["pk"])
+        context["doctor"] = get_object_or_404(
+            DoctorProfile,
+            pk=self.kwargs["pk"]
+        )
         return context
 
     def form_valid(self, form):
         user = cast(CustomUser, self.request.user)
-        form.instance.doctor = get_object_or_404(DoctorProfile, pk=self.kwargs["pk"])
+        form.instance.doctor = get_object_or_404(
+            DoctorProfile,
+            pk=self.kwargs["pk"]
+        )
         form.instance.patient = user.patient_profile
         response = super().form_valid(form)
         messages.success(self.request, "Appointment booked successfully.")
         return response
 
 
-class MyAppointmentsListView(LoginRequiredMixin, PatientRequiredMixin, generic.ListView):
+class MyAppointmentsListView(
+    LoginRequiredMixin,
+    PatientRequiredMixin,
+    generic.ListView
+):
     model = Appointment
     template_name = "hospital/my_appointments.html"
     context_object_name = "appointments_list"
@@ -110,10 +126,12 @@ class MyAppointmentsListView(LoginRequiredMixin, PatientRequiredMixin, generic.L
         ).select_related("doctor__user").prefetch_related("symptoms")
         doctor_name = self.request.GET.get("doctor_name")
         if doctor_name:
-            queryset = queryset.filter(doctor__user__last_name__icontains=doctor_name)
+            queryset = queryset.filter(
+                doctor__user__last_name__icontains=doctor_name
+            )
         return queryset
 
-    def get_context_data(self,**kwargs):
+    def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["search_form"] = AppointmentSearchForm(
             initial={"doctor_name": self.request.GET.get("doctor_name", "")}
@@ -121,7 +139,11 @@ class MyAppointmentsListView(LoginRequiredMixin, PatientRequiredMixin, generic.L
         return context
 
 
-class AppointmentCancelView(LoginRequiredMixin, PatientRequiredMixin, generic.View):
+class AppointmentCancelView(
+    LoginRequiredMixin,
+    PatientRequiredMixin,
+    generic.View
+):
     def post(self, request, pk):
         appointment = get_object_or_404(
             Appointment,
@@ -134,7 +156,11 @@ class AppointmentCancelView(LoginRequiredMixin, PatientRequiredMixin, generic.Vi
         return redirect("hospital:my-appointments")
 
 
-class AppointmentConfirmView(LoginRequiredMixin, DoctorRequiredMixin, generic.View):
+class AppointmentConfirmView(
+    LoginRequiredMixin,
+    DoctorRequiredMixin,
+    generic.View
+):
     def post(self, request, pk):
         appointment = get_object_or_404(
             Appointment,
@@ -147,7 +173,11 @@ class AppointmentConfirmView(LoginRequiredMixin, DoctorRequiredMixin, generic.Vi
         return redirect("hospital:doctor-schedule")
 
 
-class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListView):
+class DoctorScheduleView(
+    LoginRequiredMixin,
+    DoctorRequiredMixin,
+    generic.ListView
+):
     model = Appointment
     template_name = "hospital/doctor_schedule.html"
     context_object_name = "appointments_list"
@@ -161,7 +191,9 @@ class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListVi
                      .order_by("date_time"))
         patient_name = self.request.GET.get("patient_name")
         if patient_name:
-            queryset = queryset.filter(patient__user__last_name__icontains=patient_name)
+            queryset = queryset.filter(
+                patient__user__last_name__icontains=patient_name
+            )
         return queryset
 
     def get_context_data(self, **kwargs):
@@ -172,7 +204,11 @@ class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListVi
         return context
 
 
-class MedicalRecordCreateView(LoginRequiredMixin, DoctorRequiredMixin, generic.CreateView):
+class MedicalRecordCreateView(
+    LoginRequiredMixin,
+    DoctorRequiredMixin,
+    generic.CreateView
+):
     model = MedicalRecord
     form_class = MedicalRecordForm
     template_name = "hospital/medical_record_form.html"
@@ -194,7 +230,11 @@ class MedicalRecordCreateView(LoginRequiredMixin, DoctorRequiredMixin, generic.C
         return response
 
 
-class MedicalRecordListView(LoginRequiredMixin, PatientRequiredMixin, generic.ListView):
+class MedicalRecordListView(
+    LoginRequiredMixin,
+    PatientRequiredMixin,
+    generic.ListView
+):
     model = MedicalRecord
     template_name = "hospital/medical_record_list.html"
     context_object_name = "record_list"
@@ -204,15 +244,14 @@ class MedicalRecordListView(LoginRequiredMixin, PatientRequiredMixin, generic.Li
         queryset = MedicalRecord.objects.filter(
             patient=self.request.user.patient_profile
         ).select_related("doctor__user")
-        query =self.request.GET.get("query")
+        query = self.request.GET.get("query")
         if query:
             queryset = queryset.filter(diagnosis__icontains=query)
         return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context ["search_form"] = MedicalRecordSearchForm(
+        context["search_form"] = MedicalRecordSearchForm(
             initial={"query": self.request.GET.get("query", "")}
         )
         return context
-

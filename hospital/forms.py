@@ -68,7 +68,9 @@ class DoctorCreationForm(UserCreationForm):
                 experience_years=self.cleaned_data["experience_year"],
                 license_number=self.cleaned_data["license_number"],
             )
-            doctor_profile.specialization.set(self.cleaned_data["specialization"])
+            doctor_profile.specialization.set(
+                self.cleaned_data["specialization"]
+            )
         return user
 
 

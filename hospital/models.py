@@ -63,7 +63,7 @@ class DoctorProfile(models.Model):
         related_name="doctors",
     )
     experience_years = models.PositiveIntegerField(default=0)
-    license_number =  models.CharField(max_length=50, unique=True)
+    license_number = models.CharField(max_length=50, unique=True)
 
     class Meta:
         ordering = ["user__last_name", "user__first_name"]
@@ -77,7 +77,8 @@ class DoctorProfile(models.Model):
 
 class PatientProfile(models.Model):
     user = models.OneToOneField(
-        CustomUser,on_delete=models.CASCADE,
+        CustomUser,
+        on_delete=models.CASCADE,
         related_name="patient_profile",
     )
     date_of_birth = models.DateField(null=True, blank=True)
@@ -151,4 +152,6 @@ class MedicalRecord(models.Model):
         ordering = ["-created_at"]
 
     def __str__(self):
-        return f"Record for {self.patient} by {self.doctor} ({self.created_at:%Y-%m-%d %H:%M})"
+        return (f"Record for {self.patient} by {self.doctor} "
+                f"({self.created_at:%Y-%m-%d %H:%M})"
+                )

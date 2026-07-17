@@ -20,7 +20,10 @@ class PatientRequiredMixin(UserPassesTestMixin):
         )
 
     def handle_no_permission(self):
-        messages.error(self.request, "This page is available only for patients.")
+        messages.error(
+            self.request,
+            "This page is available only for patients."
+        )
         return redirect("hospital:home")
 
 
@@ -35,5 +38,8 @@ class DoctorRequiredMixin(UserPassesTestMixin):
         )
 
     def handle_no_permission(self):
-        messages.error(self.request, "This page is available only for doctors.")
+        messages.error(
+            self.request,
+            "This page is available only for doctors."
+        )
         return redirect("hospital:home")
