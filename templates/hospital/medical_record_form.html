@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block title %}Add Medical Record{% endblock %}
 {% block content %}
@@ -19,7 +20,11 @@
               class="rounded-circle bg-primary-subtle d-inline-flex justify-content-center align-items-center mb-3"
               style="width: 90px; height: 90px;"
             >
-              <i class="fa-solid fa-file-medical fa-2x text-primary"></i>
+              <img
+                src="{% static 'images/icons/icon-medical-record.png' %}"
+                class="icon-img"
+                alt="Medical Record"
+              >
             </div>
             <h2 class="fw-bold">
               Add Medical Record

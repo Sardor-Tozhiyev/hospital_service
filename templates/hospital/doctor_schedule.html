@@ -1,11 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block title %}My Schedule{% endblock %}
 {% block content %}
 <section>
-  <div class="d-flex justify-content-between align-items-center mb-4">
+  <div class="mb-4">
     <div>
-      <h1 class="fw-bold mb-1">
+      <h1 class="fw-bold mb-4">
+        <img
+          src="{% static 'images/icons/icon-clock.png' %}"
+          class="icon-img me-2"
+          alt="Schedule">
         My Schedule
       </h1>
       <p class="text-muted mb-0">
@@ -100,7 +105,11 @@
           {% empty %}
             <tr>
               <td colspan="4" class="text-center py-5">
-                <i class="fa-solid fa-calendar-xmark fa-3x text-secondary mb-3"></i>
+                <img
+                  src="{% static 'images/icons/icon-calendar.png' %}"
+                  class="icon-img mb-3"
+                  alt="No appointments"
+                >
                 <h5>
                   No appointments yet
                 </h5>

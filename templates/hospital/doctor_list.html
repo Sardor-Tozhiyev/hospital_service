@@ -1,30 +1,44 @@
 {% extends "base.html" %}
+{% load static %}
 {% load crispy_forms_tags %}
 {% block title %}Doctors{% endblock %}
 {% block content %}
 <section class="mb-5">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <div>
-      <h1 class="fw-bold mb-1">
-        Our Doctors
-      </h1>
-      <p class="text-muted mb-0">
-        Find the right specialist for your healthcare needs.
-      </p>
-    </div>
+  <div class="row align-items-center mb-5">
+  <div class="col-lg-6">
+    <span class="badge bg-primary-subtle text-primary mb-3">
+      Professional Specialists
+    </span>
+    <h1 class="fw-bold mb-3">
+      <img
+        src="{% static 'images/icons/icon-stethoscope.png' %}"
+        class="icon-img me-2"
+        alt="Doctors"
+      >
+      Our Doctors
+    </h1>
+    <p class="lead text-muted">
+      Browse experienced specialists, explore their
+      qualifications and choose the doctor that best
+      fits your healthcare needs.
+    </p>
   </div>
-  <div class="card border-0 shadow-sm p-4 mb-5">
+  <div class="col-lg-6 text-center">
+    <img
+      src="{% static 'images/hero/hero-consultation.png' %}"
+      class="img-fluid section-image"
+      alt="Doctors"
+    >
+  </div>
+</div>
+  <div class="card border-0 shadow-sm p-4 mb-5 search-card">
     <form method="get">
-      <div class="row align-items-end g-3">
-        <div class="col-lg-9">
-          {{ search_form.specialization|as_crispy_field }}
-        </div>
-        <div class="col-lg-3 d-grid">
-          <button class="btn btn-primary" type="submit">
-            <i class="fa-solid fa-magnifying-glass me-2"></i>
-            Search
-          </button>
-        </div>
+      <div class="input-group input-group-lg">
+        {{ search_form.specialization }}
+        <button class="btn btn-primary px-4" type="submit">
+          <i class="fa-solid fa-magnifying-glass me-2"></i>
+          Search
+        </button>
       </div>
     </form>
   </div>
@@ -38,9 +52,16 @@
                 class="rounded-circle bg-primary-subtle d-inline-flex justify-content-center align-items-center"
                 style="width: 90px; height: 90px;"
               >
-                <i class="fa-solid fa-user-doctor fa-2x text-primary"></i>
+                <img
+                  src="{% static 'images/icons/icon-user-profile.png' %}"
+                  alt="Doctor"
+                  class="icon-img"
+                >
               </div>
             </div>
+            <p class="text-muted small text-center mb-3">
+              Certified Medical Specialist
+            </p>
             <h4 class="text-center mb-3">
               {{ doctor }}
             </h4>
@@ -66,7 +87,7 @@
             </div>
             <a
               href="{% url 'hospital:doctor-detail' pk=doctor.pk %}"
-              class="btn btn-outline-primary mt-auto"
+              class="btn btn-primary mt-auto"
             >
               View Profile
             </a>
@@ -76,7 +97,11 @@
     {% empty %}
       <div class="col-12">
         <div class="card border-0 shadow-sm p-5 text-center">
-          <i class="fa-solid fa-user-doctor fa-3x text-secondary mb-3"></i>
+          <img
+            src="{% static 'images/icons/icon-stethoscope.png' %}"
+            class="icon-img mb-4"
+            alt="No doctors"
+          >
           <h4>
             No doctors found
           </h4>

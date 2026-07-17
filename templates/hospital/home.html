@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}Home | City Care Clinic{% endblock %}
 {% block content %}
 <section class="hero py-5 mb-5">
@@ -32,10 +33,11 @@
       </div>
     </div>
     <div class="col-lg-6 text-center mt-5 mt-lg-0">
-      <i
-        class="fa-solid fa-hospital-user text-primary"
-        style="font-size: 16rem; opacity: .12;"
-      ></i>
+      <img
+        src="{% static 'images/hero/hero-welcome.png' %}"
+        alt="City Care Clinic"
+        class="img-fluid hero-image"
+      >
     </div>
   </div>
 </section>
@@ -86,18 +88,31 @@
   </div>
 </section>
 <section class="mb-5">
-  <div class="text-center mb-5">
-    <h2 class="fw-bold">
-      Why Choose City Care Clinic?
-    </h2>
-    <p class="text-muted">
-      Modern healthcare focused on your comfort.
-    </p>
-  </div>
+  <div class="row align-items-center mb-5">
+    <div class="col-lg-6">
+      <h2 class="fw-bold mb-3">
+        Why Choose City Care Clinic?
+      </h2>
+      <p class="text-muted">
+        Modern healthcare focused on your comfort.
+      </p>
+    </div>
+    <div class="col-lg-6 text-center">
+      <img
+        src="{% static 'images/hero/hero-hospital.png' %}"
+        alt="Hospital"
+        class="img-fluid section-image"
+      >
+    </div>
   <div class="row g-4">
     <div class="col-md-4">
       <div class="card p-4 h-100">
-        <i class="fa-solid fa-heart-pulse fa-2x text-danger mb-3"></i>
+        <img
+          src="{% static 'images/icons/icon-stethoscope.png' %}"
+          width="72"
+          class="mb-4"
+          alt="Experienced Specialists"
+        >
         <h5>
           Experienced Specialists
         </h5>
@@ -108,7 +123,12 @@
     </div>
     <div class="col-md-4">
       <div class="card p-4 h-100">
-        <i class="fa-solid fa-file-medical fa-2x text-primary mb-3"></i>
+        <img
+          src="{% static 'images/icons/icon-medicine.png' %}"
+          width="72"
+          class="mb-4"
+          alt="Medical Records"
+        >
         <h5>
           Medical Records
         </h5>
@@ -119,7 +139,12 @@
     </div>
     <div class="col-md-4">
       <div class="card p-4 h-100">
-        <i class="fa-solid fa-shield-heart fa-2x text-success mb-3"></i>
+        <img
+          src="{% static 'images/icons/icon-family.png' %}"
+          width="72"
+          class="mb-4"
+          alt="Patient Care"
+        >
         <h5>
           Patient Care
         </h5>

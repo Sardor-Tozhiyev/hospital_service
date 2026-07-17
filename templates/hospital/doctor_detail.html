@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 {% block title %}{{ doctor }}{% endblock %}
 {% block content %}
 <section>
@@ -17,7 +18,11 @@
             class="rounded-circle bg-primary-subtle d-inline-flex justify-content-center align-items-center"
             style="width: 170px; height: 170px;"
           >
-            <i class="fa-solid fa-user-doctor fa-5x text-primary"></i>
+            <img
+              src="{% static 'images/icons/icon-user-profile.png' %}"
+              class="icon-img"
+              alt="Doctor"
+            >
           </div>
         </div>
         <div class="col-lg-9">
@@ -56,7 +61,11 @@
             </div>
             <div class="col-md-12">
               <div class="border rounded-3 p-3">
-                <i class="fa-solid fa-id-card text-primary me-2"></i>
+                <img
+                  src="{% static 'images/icons/icon-medical-record.png' %}"
+                  alt="Medical License"
+                  class="contact-icon me-2"
+                >
                 <strong>Medical License</strong>
                 <div class="text-muted mt-1">
                   {{ doctor.license_number }}

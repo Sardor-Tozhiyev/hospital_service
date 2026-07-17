@@ -1,4 +1,6 @@
-/* ---------- Reset ---------- */
+/* ========================================
+   RESET
+======================================== */
 
 * {
   margin: 0;
@@ -6,7 +8,9 @@
   box-sizing: border-box;
 }
 
-/* ---------- Variables ---------- */
+/* ========================================
+   VARIABLES
+======================================== */
 
 :root {
   --primary: #0d6efd;
@@ -15,7 +19,9 @@
   --shadow: rgba(0, 0, 0, .07);
 }
 
-/* ---------- Global ---------- */
+/* ========================================
+   BASE
+======================================== */
 
 html {
   scroll-behavior: smooth;
@@ -23,7 +29,7 @@ html {
 
 body {
   font-family: "Inter", sans-serif;
-  background-color: var(--background);
+  background: var(--background);
   color: var(--text);
   line-height: 1.6;
 }
@@ -42,10 +48,12 @@ a {
 
 ::selection {
   background: var(--primary);
-  color: white;
+  color: #fff;
 }
 
-/* ---------- Navbar ---------- */
+/* ========================================
+   NAVBAR
+======================================== */
 
 .navbar {
   background: #fff;
@@ -58,21 +66,17 @@ a {
   font-size: 1.45rem;
   font-weight: 700;
   color: var(--primary) !important;
-  transition: all .25s ease;
+  transition: .25s ease;
 }
 
 .navbar-brand:hover {
   color: #0a58ca !important;
 }
 
-.navbar-brand i {
-  margin-right: .5rem;
-}
-
 .nav-link {
   position: relative;
   font-weight: 500;
-  transition: all .25s ease;
+  transition: .25s ease;
 }
 
 .nav-link:hover {
@@ -87,19 +91,21 @@ a {
   width: 0;
   height: 2px;
   background: var(--primary);
-  transition: all .25s ease;
+  transition: .25s ease;
 }
 
 .nav-link:hover::after {
   width: calc(100% - 24px);
 }
 
-/* ---------- Buttons ---------- */
+/* ========================================
+   BUTTONS
+======================================== */
 
 .btn {
   border-radius: 12px;
   font-weight: 500;
-  transition: all .25s ease;
+  transition: .25s ease;
 }
 
 .btn:hover {
@@ -119,14 +125,16 @@ a {
   border-radius: 12px;
 }
 
-/* ---------- Cards ---------- */
+/* ========================================
+   CARDS
+======================================== */
 
 .card {
   border: none;
   border-radius: 18px;
   overflow: hidden;
   box-shadow: 0 10px 28px var(--shadow);
-  transition: all .25s ease;
+  transition: .25s ease;
 }
 
 .card:hover {
@@ -134,20 +142,13 @@ a {
   box-shadow: 0 22px 40px rgba(0, 0, 0, .12);
 }
 
-/* ---------- Forms ---------- */
-
-.form-control,
-.form-select {
-  border-radius: 12px;
-  padding: .7rem .9rem;
+.rounded-circle {
+  transition: .3s;
 }
 
-.form-control:focus,
-.form-select:focus {
-  box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .15);
+.card:hover .rounded-circle {
+  transform: scale(1.05);
 }
-
-/* ---------- Badges ---------- */
 
 .badge {
   border-radius: 8px;
@@ -155,23 +156,42 @@ a {
   font-weight: 500;
 }
 
-/* ---------- Tables ---------- */
+/* ========================================
+   FORMS
+======================================== */
+
+.form-control,
+.form-select {
+  padding: .7rem .9rem;
+  border-radius: 12px;
+}
+
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .15);
+}
+
+/* ========================================
+   TABLES
+======================================== */
 
 .table {
-  border-radius: 16px;
   overflow: hidden;
+  border-radius: 16px;
 }
 
 .table th {
   font-weight: 600;
 }
 
-/* ---------- Pagination ---------- */
+/* ========================================
+   PAGINATION
+======================================== */
 
 .pagination .page-link {
+  margin: 0 .15rem;
   border: none;
   border-radius: 10px;
-  margin: 0 .15rem;
   color: var(--primary);
 }
 
@@ -181,18 +201,145 @@ a {
 
 .pagination .page-item.active .page-link {
   background: var(--primary);
-  color: white;
+  color: #fff;
 }
 
-/* ---------- Hero ---------- */
+/* ========================================
+   HERO
+======================================== */
 
 .hero {
   padding: 5rem 0;
 }
 
 .hero img {
+  width: 100%;
   max-height: 520px;
+  object-fit: contain;
   animation: float 5s ease-in-out infinite;
+}
+
+.hero-image {
+  width: 100%;
+  max-width: 560px;
+  animation: float 6s ease-in-out infinite;
+  transition: .4s;
+}
+
+.hero-image:hover {
+  transform: translateY(-6px);
+}
+
+.section-image {
+  width: 100%;
+  max-width: 430px;
+}
+
+/* ========================================
+   SEARCH CARD
+======================================== */
+
+.search-card {
+  background: linear-gradient(
+    135deg,
+    #ffffff,
+    #f8fbff
+  );
+}
+
+.search-card .form-select,
+.search-card .form-control {
+  min-height: 56px;
+  border: 1px solid #dee2e6;
+  border-radius: 14px 0 0 14px;
+  box-shadow: none;
+}
+
+.search-card .form-select:focus,
+.search-card .form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .15);
+}
+
+.search-card .btn {
+  min-width: 170px;
+  border-radius: 0 14px 14px 0;
+  font-weight: 600;
+}
+
+.search-card .btn:hover {
+  transform: none;
+}
+
+/* ========================================
+   IMAGES & ICONS
+======================================== */
+
+.icon-img {
+  width: 42px;
+  height: 42px;
+  object-fit: contain;
+  flex-shrink: 0;
+  transition:
+    transform .3s ease,
+    filter .3s ease;
+}
+
+.card:hover .icon-img {
+  transform: scale(1.08);
+  filter: brightness(1.05);
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.footer-brand-icon {
+  width: 34px;
+  height: 34px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.contact-icon {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* ========================================
+   FOOTER
+======================================== */
+
+footer {
+  margin-top: 80px;
+  padding: 20px 0;
+  background: #fff;
+  border-top: 1px solid #ececec;
+  color: #6c757d;
+  text-align: center;
+  font-size: .95rem;
+}
+
+footer a {
+  color: #6c757d;
+  transition: .25s ease;
+}
+
+footer a:hover {
+  color: var(--primary);
+}
+
+/* ========================================
+   ANIMATIONS
+======================================== */
+
+.fa-solid {
+  transition: .25s ease;
 }
 
 @keyframes float {
@@ -211,33 +358,26 @@ a {
 
 }
 
-/* ---------- Icons ---------- */
+/* ========================================
+   RESPONSIVE
+======================================== */
 
-.fa-solid {
-  transition: all .25s ease;
+@media (max-width: 991px) {
+
+  .hero-image {
+    max-width: 420px;
+    margin-top: 40px;
+  }
+
+  .section-image {
+    max-width: 320px;
+    margin-top: 30px;
+  }
+
 }
 
-/* ---------- Footer ---------- */
-
-footer {
-  background: #fff;
-  border-top: 1px solid #ececec;
-  margin-top: 80px;
-  padding: 20px 0;
-  color: #6c757d;
-  text-align: center;
-  font-size: .95rem;
-}
-
-footer a {
-  color: #6c757d;
-  transition: all .25s ease;
-}
-
-footer a:hover {
-  color: var(--primary);
-}
-
-footer i {
-  width: 20px;
+.search-btn-icon {
+  width: 18px;
+  height: 18px;
+  object-fit: contain;
 }
