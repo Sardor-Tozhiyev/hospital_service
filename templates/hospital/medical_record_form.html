@@ -2,12 +2,36 @@
 {% load crispy_forms_tags %}
 {% block title %}Add Medical Record{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="card p-4">
-      <h3 class="mb-4">Add Medical Record</h3>
-      {% crispy form %}
+<section>
+  <a
+    href="{% url 'hospital:doctor-schedule' %}"
+    class="btn btn-outline-secondary mb-4"
+  >
+    <i class="fa-solid fa-arrow-left me-2"></i>
+    Back to Schedule
+  </a>
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          <div class="text-center mb-5">
+            <div
+              class="rounded-circle bg-primary-subtle d-inline-flex justify-content-center align-items-center mb-3"
+              style="width: 90px; height: 90px;"
+            >
+              <i class="fa-solid fa-file-medical fa-2x text-primary"></i>
+            </div>
+            <h2 class="fw-bold">
+              Add Medical Record
+            </h2>
+            <p class="text-muted mb-0">
+              Complete the patient's diagnosis and treatment information.
+            </p>
+          </div>
+          {% crispy form %}
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}

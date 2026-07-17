@@ -129,7 +129,8 @@ class MedicalRecordForm(forms.ModelForm):
         model = MedicalRecord
         fields = ["diagnosis", "prescription"]
         widgets = {
-            "diagnosis": forms.Textarea(attrs={"rows": 4}),
+            "diagnosis": forms.Textarea(attrs={"rows": 3}),
+            "treatment": forms.Textarea(attrs={"rows": 4}),
             "prescription": forms.Textarea(attrs={"rows": 3}),
         }
 

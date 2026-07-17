@@ -2,12 +2,65 @@
 {% load crispy_forms_tags %}
 {% block title %}Book Appointment{% endblock %}
 {% block content %}
-<div class="row justify-content-center">
-  <div class="col-md-6">
-    <div class="card p-4">
-      <h3 class="mb-4">Book Appointment with {{ doctor }}</h3>
-      {% crispy form %}
+<section>
+  <a
+    href="{% url 'hospital:doctor-detail' doctor.pk %}"
+    class="btn btn-outline-secondary mb-4"
+  >
+    <i class="fa-solid fa-arrow-left me-2"></i>
+    Back to Doctor
+  </a>
+  <div class="row g-5">
+    <div class="col-lg-4">
+      <div class="card border-0 shadow-sm h-100">
+        <div class="card-body text-center p-4">
+          <div
+            class="rounded-circle bg-primary-subtle d-inline-flex justify-content-center align-items-center mb-4"
+            style="width: 110px; height: 110px;"
+          >
+            <i class="fa-solid fa-user-doctor fa-3x text-primary"></i>
+          </div>
+          <h3 class="fw-bold mb-3">
+            {{ doctor }}
+          </h3>
+          <div class="mb-4">
+            {% for spec in doctor.specialization.all %}
+              <span class="badge bg-primary-subtle text-primary me-1 mb-2">
+                {{ spec }}
+              </span>
+            {% endfor %}
+          </div>
+          <div class="text-start">
+            <p class="mb-3">
+              <i class="fa-solid fa-building text-primary me-2"></i>
+              {{ doctor.department }}
+            </p>
+            <p class="mb-3">
+              <i class="fa-solid fa-briefcase text-primary me-2"></i>
+              {{ doctor.experience_years }}
+              years of experience
+            </p>
+            <p class="mb-0">
+              <i class="fa-solid fa-id-card text-primary me-2"></i>
+              {{ doctor.license_number }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-8">
+      <div class="card border-0 shadow-sm">
+        <div class="card-body p-5">
+          <h2 class="fw-bold mb-2">
+            Book Appointment
+          </h2>
+          <p class="text-muted mb-5">
+            Choose a convenient date and describe your symptoms.
+          </p>
+          {% crispy form %}
+        </div>
+      </div>
     </div>
   </div>
-</div>
+</section>
 {% endblock %}

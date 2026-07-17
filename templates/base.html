@@ -4,88 +4,183 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{% block title %} Private Hospital{% endblock %}</title>
+  <title>{% block title %}City Care Clinic{% endblock %}</title>
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-  <style>
-    body {background-color: #f5f7fa; }
-    .navbar-brand i {margin-right: 8px; }
-    .card {border: none; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-    .footer {padding: 20px 0; color: #6c757d; text-align: center; }
-  </style>
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
+<nav class="navbar navbar-expand-lg sticky-top py-3">
   <div class="container">
+
     <a class="navbar-brand" href="{% url 'hospital:home' %}">
-      <i class="fa-solid fa-house-medical"></i>City Care Clinic
+      <i class="fa-solid fa-heart-pulse"></i>
+      City Care Clinic
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button
+      class="navbar-toggler border-0 shadow-none"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#navbarNav"
+    >
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav me-auto">
+      <ul class="navbar-nav mx-auto">
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'hospital:doctor-list' %}">Doctors</a>
+          <a class="nav-link px-3" href="{% url 'hospital:home' %}">
+            Home
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link px-3" href="{% url 'hospital:doctor-list' %}">
+            Doctors
+          </a>
         </li>
         {% if user.is_authenticated %}
           {% if user.role == "patient" %}
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'hospital:my-appointments' %}">My Appointments</a>
+              <a
+                class="nav-link px-3"
+                href="{% url 'hospital:my-appointments' %}"
+              >
+                My Appointments
+              </a>
             </li>
             <li class="nav-item">
-              <a class ="nav-link" href="{% url 'hospital:my-records' %}"> My Records</a>
+              <a
+                class="nav-link px-3"
+                href="{% url 'hospital:my-records' %}"
+              >
+                Medical Records
+              </a>
             </li>
           {% elif user.role == "doctor" %}
             <li class="nav-item">
-              <a class="nav-link" href="{%  url 'hospital:doctor-schedule' %}">My Schedule</a>
+              <a
+                class="nav-link px-3"
+                href="{% url 'hospital:doctor-schedule' %}"
+              >
+                My Schedule
+              </a>
             </li>
           {% endif %}
         {% endif %}
       </ul>
-      <ul class="navbar-nav ms-auto">
+      <div class="d-flex align-items-center gap-2">
         {% if user.is_authenticated %}
-          <li class="nav-item">
-            <span class="nav-link text-white-50">
-              <i class="fa-solid fa-user"></i>{{ user.username }}
-            </span>
-          </li>
-          <li class="nav-item">
-            <form method="post" action="{% url 'logout' %}" class="d-inline">
-              {% csrf_token %}
-              <button type="submit" class="btn btn-outline-light btn-sm ms-2">Logout</button>
-            </form>
-          </li>
+          <span class="text-secondary me-2">
+            <i class="fa-solid fa-user-doctor me-1"></i>
+            {{ user.username }}
+          </span>
+          <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button class="btn btn-outline-danger">
+              Logout
+            </button>
+          </form>
         {% else %}
-          <li class="nav-item">
-            <a class="btn btn-outline-light btn-sm me-2" href="{% url 'login' %}">Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="btn btn-light btn-sm" href="{% url 'hospital:register' %}">Sign Up</a>
-          </li>
+          <a href="{% url 'login' %}" class="btn btn-outline-primary">
+            Login
+          </a>
+          <a
+            href="{% url 'hospital:register' %}"
+            class="btn btn-primary"
+          >
+            Sign Up
+          </a>
         {% endif %}
-      </ul>
+      </div>
     </div>
   </div>
 </nav>
-<div class="container mt-4 mb-5">
-  {% if messages %}
-    {% for message in messages %}
-      <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
-  {% block content %}
-  {% endblock %}
-</div>
-<footer class="footer">
+<main class="py-5">
   <div class="container">
-    &copy; {% now "Y" %} City Care Clinic. All rights reserved.
+    {% if messages %}
+      {% for message in messages %}
+        <div
+          class="alert alert-{{ message.tags }} alert-dismissible fade show shadow-sm border-0 mb-4"
+          role="alert">
+          {{ message }}
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="alert"
+          ></button>
+        </div>
+      {% endfor %}
+    {% endif %}
+    {% block content %}
+    {% endblock %}
+  </div>
+</main>
+<footer class="mt-5">
+  <div class="container">
+    <div class="row py-5">
+      <div class="col-lg-4 mb-4">
+        <h4 class="text-primary fw-bold">
+          <i class="fa-solid fa-heart-pulse me-2"></i>
+          City Care Clinic
+        </h4>
+        <p class="text-muted mt-3">
+          Professional healthcare with experienced doctors,
+          modern equipment and online appointment booking.
+        </p>
+      </div>
+      <div class="col-lg-4 mb-4">
+        <h5 class="fw-semibold mb-3">
+          Quick Links
+        </h5>
+        <ul class="list-unstyled">
+          <li class="mb-2">
+            <a href="{% url 'hospital:home' %}">
+              Home
+            </a>
+          </li>
+          <li class="mb-2">
+            <a href="{% url 'hospital:doctor-list' %}">
+              Doctors
+            </a>
+          </li>
+          {% if user.is_authenticated %}
+            {% if user.role == "patient" %}
+              <li class="mb-2">
+                <a href="{% url 'hospital:my-appointments' %}">
+                  My Appointments
+                </a>
+              </li>
+            {% endif %}
+          {% endif %}
+        </ul>
+      </div>
+      <div class="col-lg-4">
+        <h5 class="fw-semibold mb-3">
+          Contact
+        </h5>
+        <p class="mb-2">
+          <i class="fa-solid fa-phone me-2 text-primary"></i>
+          +380 (00) 000-00-00
+        </p>
+        <p class="mb-2">
+          <i class="fa-solid fa-envelope me-2 text-primary"></i>
+          info@citycareclinic.com
+        </p>
+        <p>
+          <i class="fa-solid fa-location-dot me-2 text-primary"></i>
+          Odesa, Ukraine
+        </p>
+      </div>
+    </div>
+    <hr>
+    <div class="text-center py-3 text-muted">
+      © {% now "Y" %} City Care Clinic.
+      All rights reserved.
+    </div>
   </div>
 </footer>
-
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

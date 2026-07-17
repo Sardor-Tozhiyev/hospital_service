@@ -2,56 +2,131 @@
 {% load crispy_forms_tags %}
 {% block title %}My Appointments{% endblock %}
 {% block content %}
-<h2 class="mb-4">My Appointments</h2>
-
-<form method="get" class="mb-4">
-  <div class="col-md-8">
-    {{ search_form.doctor_name|as_crispy_field }}
+<section>
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">
+        My Appointments
+      </h1>
+      <p class="text-muted mb-0">
+        View and manage your scheduled appointments.
+      </p>
+    </div>
   </div>
-  <div class="col-md-2">
-    <button type="submit" class="btn btn-primary w-100">Search</button>
+  <div class="card border-0 shadow-sm p-4 mb-5">
+    <form method="get">
+      <div class="row align-items-end g-3">
+        <div class="col-lg-9">
+          {{ search_form.doctor_name|as_crispy_field }}
+        </div>
+        <div class="col-lg-3 d-grid">
+          <button
+            type="submit"
+            class="btn btn-primary"
+          >
+            <i class="fa-solid fa-magnifying-glass me-2"></i>
+            Search
+          </button>
+        </div>
+      </div>
+    </form>
   </div>
-</form>
-
-<table class="table table-hover bg-white">
-  <thead>
-    <tr>
-      <th>Doctor</th>
-      <th>Date & Time</th>
-      <th>Symptoms</th>
-      <th>Status</th>
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-    {% for appointment in appointment_list %}
-    <tr>
-      <td>{{ appointment.doctor }}</td>
-      <td>{{ appointment.date_time }}</td>
-      <td>
-        {% for s in appointment.symptoms.all %}
-          <span class="badge bg-secondary">{{ s }}</span>
-        {% endfor %}
-      </td>
-      <td>
-        <span class="badge bg-{% if appointment.status == 'confirmed' %}success{% elif appointment.status == 'cancelled' %}danger{% elif appointment.status == 'completed' %}primary{% else %}warning{% endif %}">
-          {{ appointment.get_status_display }}
-        </span>
-      </td>
-      <td>
-        {% if appointment.status == "pending" %}
-        <form method="post" action="{% url 'hospital:appointment-cancel' appointment.pk %}" class="d-inline">
-          {% csrf_token %}
-          <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
-        </form>
-        {% endif %}
-      </td>
-    </tr>
-    {% empty %}
-    <tr><td colspan="5" class="text-center text-muted">No appointments yet.</td></tr>
-    {% endfor %}
-  </tbody>
-</table>
-
-{% include "includes/pagination.html" %}
+  <div class="card border-0 shadow-sm">
+    <div class="table-responsive">
+      <table class="table table-hover align-middle mb-0">
+        <thead class="table-light">
+          <tr>
+            <th>Doctor</th>
+            <th>Date & Time</th>
+            <th>Symptoms</th>
+            <th>Status</th>
+            <th class="text-end">
+              Actions
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for appointment in appointments_list %}
+            <tr>
+              <td class="fw-semibold">
+                <i class="fa-solid fa-user-doctor text-primary me-2"></i>
+                {{ appointment.doctor }}
+              </td>
+              <td>
+                {{ appointment.date_time|date:"M d, Y" }}
+                <br>
+                <small class="text-muted">
+                  {{ appointment.date_time|time:"H:i" }}
+                </small>
+              </td>
+              <td>
+                {% for symptom in appointment.symptoms.all %}
+                  <span class="badge bg-primary-subtle text-primary me-1"
+                    {{ symptom }}
+                  </span>
+                {% empty %}
+                  <span class="text-muted">
+                    —
+                  </span>
+                {% endfor %}
+              </td>
+              <td>
+                <span class="badge
+                  {% if appointment.status == "confirmed" %}
+                    bg-success
+                  {% elif appointment.status == "cancelled" %}
+                    bg-danger
+                  {% elif appointment.status == "completed" %}
+                    bg-primary
+                  {% else %}
+                    bg-warning text-dark
+                  {% endif %}
+                ">
+                  {{ appointment.get_status_display }}
+                </span>
+              </td>
+              <td class="text-end">
+                {% if appointment.status == "pending" %}
+                  <form
+                    method="post"
+                    action="{% url 'hospital:appointment-cancel' appointment.pk %}"
+                    class="d-inline"
+                  >
+                    {% csrf_token %}
+                    <button
+                      class="btn btn-danger btn-sm"
+                      type="submit"
+                    >
+                      <i class="fa-solid fa-xmark me-1"></i>
+                      Cancel
+                    </button>
+                  </form>
+                {% else %}
+                  <span class="text-muted">
+                    —
+                  </span>
+                {% endif %}
+              </td>
+            </tr>
+          {% empty %}
+            <tr>
+              <td colspan="5" class="text-center py-5">
+                <i class="fa-solid fa-calendar-xmark fa-3x text-secondary mb-3"></i>
+                <h5>
+                  No appointments yet
+                </h5>
+                <p class="text-muted mb-0">
+                  Book your first appointment to get started.
+                </p>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+  <div class="mt-4">
+    {% include "includes/pagination.html" %}
+  </div>
+</section>
 {% endblock %}

@@ -154,9 +154,11 @@ class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListVi
     paginate_by = 10
 
     def get_queryset(self):
-        queryset = Appointment.objects.filter(
+        queryset = ((Appointment.objects.filter(
             doctor=self.request.user.doctor_profile
-        ).select_related("patient__user")
+        )
+                     .select_related("patient__user"))
+                     .order_by("date_time"))
         patient_name = self.request.GET.get("patient_name")
         if patient_name:
             queryset = queryset.filter(patient__user__last_name__icontains=patient_name)
