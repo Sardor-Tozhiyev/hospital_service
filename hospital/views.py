@@ -11,6 +11,7 @@ from hospital.forms import (
     PatientRegistrationForm,
     AppointmentForm,
     AppointmentSearchForm,
+    ScheduleSearchForm,
     MedicalRecordSearchForm,
     MedicalRecordForm
 )
@@ -49,7 +50,7 @@ class DoctorListView(generic.ListView):
         specialization = self.request.GET.get("specialization")
         if specialization:
             queryset = queryset.filter(
-                specializations__name__icontains=specialization
+                specialization__name__icontains=specialization
             ).distinct()
         return queryset
 
@@ -83,11 +84,6 @@ class AppointmentCreateView(LoginRequiredMixin, PatientRequiredMixin, generic.Cr
     form_class = AppointmentForm
     success_url = reverse_lazy("hospital:my-appointments")
 
-    def get_initial(self):
-        initial = super().get_initial()
-        initial["doctor"] = self.kwargs["pk"]
-        return initial
-
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["doctor"] = get_object_or_404(DoctorProfile, pk=self.kwargs["pk"])
@@ -104,6 +100,7 @@ class AppointmentCreateView(LoginRequiredMixin, PatientRequiredMixin, generic.Cr
 
 class MyAppointmentsListView(LoginRequiredMixin, PatientRequiredMixin, generic.ListView):
     model = Appointment
+    template_name = "hospital/my_appointments.html"
     context_object_name = "appointments_list"
     paginate_by = 5
 
@@ -125,7 +122,7 @@ class MyAppointmentsListView(LoginRequiredMixin, PatientRequiredMixin, generic.L
 
 
 class AppointmentCancelView(LoginRequiredMixin, PatientRequiredMixin, generic.View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         appointment = get_object_or_404(
             Appointment,
             pk=pk,
@@ -138,7 +135,7 @@ class AppointmentCancelView(LoginRequiredMixin, PatientRequiredMixin, generic.Vi
 
 
 class AppointmentConfirmView(LoginRequiredMixin, DoctorRequiredMixin, generic.View):
-    def get(self, request, pk):
+    def post(self, request, pk):
         appointment = get_object_or_404(
             Appointment,
             pk=pk,
@@ -152,6 +149,7 @@ class AppointmentConfirmView(LoginRequiredMixin, DoctorRequiredMixin, generic.Vi
 
 class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListView):
     model = Appointment
+    template_name = "hospital/doctor_schedule.html"
     context_object_name = "appointments_list"
     paginate_by = 10
 
@@ -166,7 +164,7 @@ class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListVi
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["search_form"] = AppointmentSearchForm(
+        context["search_form"] = ScheduleSearchForm(
             initial={"patient_name": self.request.GET.get("patient_name", "")}
         )
         return context
@@ -175,6 +173,7 @@ class DoctorScheduleView(LoginRequiredMixin, DoctorRequiredMixin, generic.ListVi
 class MedicalRecordCreateView(LoginRequiredMixin, DoctorRequiredMixin, generic.CreateView):
     model = MedicalRecord
     form_class = MedicalRecordForm
+    template_name = "hospital/medical_record_form.html"
     success_url = reverse_lazy("hospital:doctor-schedule")
 
     def form_valid(self, form):
@@ -195,6 +194,7 @@ class MedicalRecordCreateView(LoginRequiredMixin, DoctorRequiredMixin, generic.C
 
 class MedicalRecordListView(LoginRequiredMixin, PatientRequiredMixin, generic.ListView):
     model = MedicalRecord
+    template_name = "hospital/medical_record_list.html"
     context_object_name = "record_list"
     paginate_by = 5
 

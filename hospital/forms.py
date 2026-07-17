@@ -65,7 +65,7 @@ class DoctorCreationForm(UserCreationForm):
             doctor_profile = DoctorProfile.objects.create(
                 user=user,
                 department=self.cleaned_data["department"],
-                experience_year=self.cleaned_data["experience_year"],
+                experience_years=self.cleaned_data["experience_year"],
                 license_number=self.cleaned_data["license_number"],
             )
             doctor_profile.specialization.set(self.cleaned_data["specialization"])
@@ -106,7 +106,7 @@ class AppointmentForm(forms.ModelForm):
 
     class Meta:
         model = Appointment
-        fields = ["doctor", "date_time", "symptoms", "reason"]
+        fields = ["date_time", "symptoms", "reason"]
         widgets = {
             "date_time": forms.DateTimeInput(attrs={"type": "datetime-local"}),
         }
@@ -115,7 +115,7 @@ class AppointmentForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
-            Fieldset("", "doctor", "date_time", "symptoms", "reason"),
+            Fieldset("", "date_time", "symptoms", "reason"),
         )
         self.helper.add_input(
             Submit(
@@ -146,7 +146,10 @@ class DoctorSearchForm(forms.Form):
         max_length=100,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by specialization"}),
+        widget=forms.TextInput(attrs={
+            "placeholder": "Search by specialization",
+            "class": "form-control",
+        }),
     )
 
 
@@ -155,7 +158,10 @@ class AppointmentSearchForm(forms.Form):
         max_length=100,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by doctor name"}),
+        widget=forms.TextInput(attrs={
+            "placeholder": "Search by doctor name",
+            "class": "form-control",
+        }),
     )
 
 
@@ -164,7 +170,10 @@ class MedicalRecordSearchForm(forms.Form):
         max_length=100,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by diagnosis"}),
+        widget=forms.TextInput(attrs={
+            "placeholder": "Search by diagnosis",
+            "class": "form-control",
+        }),
     )
 
 
@@ -173,5 +182,8 @@ class ScheduleSearchForm(forms.Form):
         max_length=100,
         required=False,
         label="",
-        widget=forms.TextInput(attrs={"placeholder": "Search by patient name"}),
+        widget=forms.TextInput(attrs={
+            "placeholder": "Search by patient name",
+            "class": "form-control",
+        }),
     )

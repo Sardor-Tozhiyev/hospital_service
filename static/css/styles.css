@@ -1,0 +1,243 @@
+/* ---------- Reset ---------- */
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Variables ---------- */
+
+:root {
+  --primary: #0d6efd;
+  --background: #f7f9fc;
+  --text: #2c3e50;
+  --shadow: rgba(0, 0, 0, .07);
+}
+
+/* ---------- Global ---------- */
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", sans-serif;
+  background-color: var(--background);
+  color: var(--text);
+  line-height: 1.6;
+}
+
+main {
+  min-height: calc(100vh - 230px);
+}
+
+.container {
+  max-width: 1200px;
+}
+
+a {
+  text-decoration: none;
+}
+
+::selection {
+  background: var(--primary);
+  color: white;
+}
+
+/* ---------- Navbar ---------- */
+
+.navbar {
+  background: #fff;
+  padding: .9rem 0;
+  box-shadow: 0 2px 18px rgba(0, 0, 0, .06);
+  backdrop-filter: blur(14px);
+}
+
+.navbar-brand {
+  font-size: 1.45rem;
+  font-weight: 700;
+  color: var(--primary) !important;
+  transition: all .25s ease;
+}
+
+.navbar-brand:hover {
+  color: #0a58ca !important;
+}
+
+.navbar-brand i {
+  margin-right: .5rem;
+}
+
+.nav-link {
+  position: relative;
+  font-weight: 500;
+  transition: all .25s ease;
+}
+
+.nav-link:hover {
+  color: var(--primary) !important;
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 12px;
+  bottom: 0;
+  width: 0;
+  height: 2px;
+  background: var(--primary);
+  transition: all .25s ease;
+}
+
+.nav-link:hover::after {
+  width: calc(100% - 24px);
+}
+
+/* ---------- Buttons ---------- */
+
+.btn {
+  border-radius: 12px;
+  font-weight: 500;
+  transition: all .25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary,
+.btn-outline-primary {
+  padding: .55rem 1.4rem;
+}
+
+.btn-primary {
+  box-shadow: 0 10px 25px rgba(13, 110, 253, .18);
+}
+
+.btn-outline-danger {
+  border-radius: 12px;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  border: none;
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 28px var(--shadow);
+  transition: all .25s ease;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 22px 40px rgba(0, 0, 0, .12);
+}
+
+/* ---------- Forms ---------- */
+
+.form-control,
+.form-select {
+  border-radius: 12px;
+  padding: .7rem .9rem;
+}
+
+.form-control:focus,
+.form-select:focus {
+  box-shadow: 0 0 0 .2rem rgba(13, 110, 253, .15);
+}
+
+/* ---------- Badges ---------- */
+
+.badge {
+  border-radius: 8px;
+  padding: .5rem .7rem;
+  font-weight: 500;
+}
+
+/* ---------- Tables ---------- */
+
+.table {
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+.table th {
+  font-weight: 600;
+}
+
+/* ---------- Pagination ---------- */
+
+.pagination .page-link {
+  border: none;
+  border-radius: 10px;
+  margin: 0 .15rem;
+  color: var(--primary);
+}
+
+.pagination .page-link:hover {
+  background: #e9f2ff;
+}
+
+.pagination .page-item.active .page-link {
+  background: var(--primary);
+  color: white;
+}
+
+/* ---------- Hero ---------- */
+
+.hero {
+  padding: 5rem 0;
+}
+
+.hero img {
+  max-height: 520px;
+  animation: float 5s ease-in-out infinite;
+}
+
+@keyframes float {
+
+  0% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-12px);
+  }
+
+  100% {
+    transform: translateY(0);
+  }
+
+}
+
+/* ---------- Icons ---------- */
+
+.fa-solid {
+  transition: all .25s ease;
+}
+
+/* ---------- Footer ---------- */
+
+footer {
+  background: #fff;
+  border-top: 1px solid #ececec;
+  margin-top: 80px;
+  padding: 20px 0;
+  color: #6c757d;
+  text-align: center;
+  font-size: .95rem;
+}
+
+footer a {
+  color: #6c757d;
+  transition: all .25s ease;
+}
+
+footer a:hover {
+  color: var(--primary);
+}
+
+footer i {
+  width: 20px;
+}

@@ -4,7 +4,7 @@
 {% block content %}
 <h2 class="mb-4">My Appointments</h2>
 
-<form method="get" class="row g-2 mb-4 align-items-end">
+<form method="get" class="mb-4">
   <div class="col-md-8">
     {{ search_form.doctor_name|as_crispy_field }}
   </div>
@@ -40,7 +40,10 @@
       </td>
       <td>
         {% if appointment.status == "pending" %}
-        <a href="{% url 'hospital:appointment-cancel' appointment.pk %}" class="btn btn-sm btn-outline-danger">Cancel</a>
+        <form method="post" action="{% url 'hospital:appointment-cancel' appointment.pk %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-danger">Cancel</button>
+        </form>
         {% endif %}
       </td>
     </tr>

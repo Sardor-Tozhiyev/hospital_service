@@ -4,7 +4,7 @@
 {% block content %}
 <h2 class="mb-4">My Schedule</h2>
 
-<form method="get" class="row g-2 mb-4 align-items-end">
+<form method="get" class="mb-4">
   <div class="col-md-8">
     {{ search_form.patient_name|as_crispy_field }}
   </div>
@@ -34,7 +34,10 @@
       </td>
       <td>
         {% if appointment.status == "pending" %}
-        <a href="{% url 'hospital:appointment-confirm' appointment.pk %}" class="btn btn-sm btn-outline-success">Confirm</a>
+        <form method="post" action="{% url 'hospital:appointment-confirm' appointment.pk %}" class="d-inline">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-sm btn-outline-success">Confirm</button>
+        </form>
         {% endif %}
         {% if appointment.status == "confirmed" %}
         <a href="{% url 'hospital:record-create' appointment.pk %}" class="btn btn-sm btn-outline-primary">Add Record</a>

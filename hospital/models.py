@@ -69,10 +69,10 @@ class DoctorProfile(models.Model):
         ordering = ["user__last_name", "user__first_name"]
 
     def __str__(self):
-        return f"Dr.{self.user.get_full_name() or self.user.username}"
+        return f"Dr. {self.user.get_full_name() or self.user.username}"
 
     def get_absolute_url(self):
-        return reverse("hospital:doctor_detail", kwargs={"pk": self.pk})
+        return reverse("hospital:doctor-detail", kwargs={"pk": self.pk})
 
 
 class PatientProfile(models.Model):
@@ -120,6 +120,9 @@ class Appointment(models.Model):
         default="pending",
     )
     reason = models.CharField(max_length=100, null=True, blank=True)
+
+    class Meta:
+        ordering = ["-date_time"]
 
 
 class MedicalRecord(models.Model):
