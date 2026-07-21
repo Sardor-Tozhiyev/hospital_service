@@ -6,10 +6,13 @@ from pathlib import Path
 
 import environ
 
-env = environ.Env()
-environ.Env.read_env(BASE_DIR / ".env")  # шукає .env у корені проєкту
 
 BASE_DIR = Path(__file__).resolve().parent.parent.parent
+
+env = environ.Env()
+environ.Env.read_env(BASE_DIR / ".env")
+
+SECRET_KEY = env("DJANGO_SECRET_KEY", default="django-insecure-9#w*7sm=z_6^%x!_bd+3%-*kq@c_716ym4xsk5mf=awt5fvhh#")
 
 INSTALLED_APPS = [
     "django.contrib.admin",

@@ -2,8 +2,12 @@ from .base import *
 import os
 
 DEBUG = env.bool("DJANGO_DEBUG", default=False)
+
 SECRET_KEY = env("DJANGO_SECRET_KEY")
+
 ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
+
+SECRET_KEY = env("DJANGO_SECRET_KEY")
 
 DATABASES = {
     "default": {
