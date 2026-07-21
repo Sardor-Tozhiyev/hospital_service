@@ -9,6 +9,8 @@ ALLOWED_HOSTS = env.list("DJANGO_ALLOWED_HOSTS", default=[])
 
 SECRET_KEY = env("DJANGO_SECRET_KEY")
 
+RENDER_EXTERNAL_HOSTNAME = env("RENDER_EXTERNAL_HOSTNAME")
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
