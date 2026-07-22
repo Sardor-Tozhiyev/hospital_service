@@ -5,6 +5,7 @@ A Django web application for managing a clinic: patients search for doctors and 
 ## Table of Contents
 
 - [Features](#features)
+- [Live Demo](#live-demo)
 - [Tech Stack](#tech-stack)
 - [Project Structure](#project-structure)
 - [Database Schema](#database-schema)
@@ -32,6 +33,18 @@ A Django web application for managing a clinic: patients search for doctors and 
 - Role separation (`patient` / `doctor`) built into a custom user model
 - Home page with clinic stats (number of doctors, departments, patients)
 - UI built with Bootstrap 5 via `django-crispy-forms`
+
+## Live Demo
+
+**Application:** https://hospital-service-u3m3.onrender.com
+
+### Demo Account
+
+| Username | Password |
+|---|---|
+| `user` | `user12345` |
+
+Use this account to explore the application without creating a new user.
 
 ## Tech Stack
 
